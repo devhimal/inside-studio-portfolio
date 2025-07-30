@@ -1,0 +1,8 @@
+[
+  { "language": "English", "message": "Thank You" },
+  { "language": "Nepali", "message": "धन्यवाद" },
+  { "language": "Chinese", "message": "谢谢" },
+  { "language": "Korean", "message": "감사합니다" },
+  { "language": "Japanese", "message": "ありがとうございます" },
+  { "language": "Hindi", "message": "धन्यवाद" }
+]
