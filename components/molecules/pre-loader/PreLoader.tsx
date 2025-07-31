@@ -13,60 +13,63 @@ const PreLoader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<PreLoaderProps[]>([]);
 
+  // Fetch messages from local JSON file
   useEffect(() => {
     const loadMessages = async () => {
-      const res = await fetch("/data/messages.json");
-      const data = await res.json();
-      setMessages(data);
+      try {
+        const res = await fetch("/data/messages.json");
+        const data = await res.json();
+        setMessages(data);
+      } catch (error) {
+        console.error("Failed to load messages:", error);
+      }
     };
+
     loadMessages();
   }, []);
 
-  console.log("PreLoader messages:", messages);
-
+  // Animate messages and container
   useEffect(() => {
     if (messages.length === 0) return;
 
+    const textEl = textRef.current;
+    const containerEl = containerRef.current;
+
+    if (!textEl || !containerEl) return;
+
     const tl = gsap.timeline({ repeat: 0 });
 
-    messages.forEach(({ message }, i) => {
-      tl.to(textRef.current!, {
-        opacity: 0,
-        duration: 0.2,
+    messages.forEach(({ message }) => {
+      tl.to(textEl, {
+        opacity: 1,
+        duration: 0.1,
         onComplete: () => {
-          if (textRef.current) textRef.current.innerText = message;
+          textEl.innerText = message;
         },
       });
-      tl.to(textRef.current!, {
-        opacity: 1,
-        duration: 0.6,
-      });
-      tl.to(textRef.current!, {
-        opacity: 1,
-        duration: 1,
-      });
+      tl.to(textEl, { opacity: 1, duration: 0.1 });
     });
 
-    tl.to(containerRef.current!, {
+    // Slide the container off screen at the end
+    tl.to(containerEl, {
       y: "-100%",
-      duration: 1,
+      duration: 2,
       ease: "power3.inOut",
-      onComplete: () => {
-        if (onFinish) onFinish();
-      },
     });
 
-    return () => tl.kill();
+    return () => {
+      tl.kill();
+    };
   }, [messages]);
 
   return (
     <div
       ref={containerRef}
-      className="pre-loader fixed top-0 left-0 w-full h-full flex items-center justify-center bg-red-300 z-50 overflow-hidden"
+      className="pre-loader fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black z-50 overflow-hidden"
     >
       <div
         ref={textRef}
-        className="text-red-600 text-4xl font-semibold opacity-0 transition-all duration-500 capitalize"
+        className="text-white text-4xl font-semibold opacity-0 transition-all duration-500 capitalize"
       >
         Thank You
       </div>

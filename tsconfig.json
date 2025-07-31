@@ -29,7 +29,6 @@
       "@/organisms": ["./components/organisms/*"],
       "@/atoms": ["./components/atoms/*"],
       "@/molecules": ["./components/molecules/*"]
-      "@/data":["./data"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
